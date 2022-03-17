@@ -1,0 +1,70 @@
+package com.example.myapplication;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private int ShowLength = 18;
+    private String str = "";
+    private TextView tv;
+    private String TAG = MainActivity.class.getName();
+    @Override
+        protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Button botton_0 = findViewById(R.id.btn0);
+        Button botton_1 = findViewById(R.id.btn1);
+        Button botton_add = findViewById(R.id.btnadd);
+        Button botton_eq = findViewById(R.id.btneq);
+        tv = findViewById(R.id.txt);
+        botton_0.setOnClickListener(this);
+        botton_1.setOnClickListener(this);
+        botton_eq.setOnClickListener(this);
+        botton_add.setOnClickListener(this);
+
+        Log.d(  TAG,  "create done"   );
+    }
+
+    private String cutStr(String str, int length)
+    {
+        if(str.length()>length)
+        {
+            return str.substring( str.length()-1 -length, str.length()-1);
+        }
+        return str;
+    }
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id)
+        {
+            case R.id.btn0:
+                str += "0";
+                tv.setText(cutStr(str, ShowLength));
+                break;
+            case R.id.btn1:
+                str += "1";
+                tv.setText(cutStr(str, ShowLength));
+                break;
+            case R.id.btneq:
+                String[] strList = str.split("\\+");
+                int result=0;
+                for (String s: strList) {
+                    result += Integer.parseInt(s);
+                }
+                tv.setText(String.valueOf(result));
+                str = tv.getText().toString();
+                break;
+            case R.id.btnadd:
+                str += "+";
+                tv.setText(cutStr(str, ShowLength));
+                break;
+        }
+    }
+}
